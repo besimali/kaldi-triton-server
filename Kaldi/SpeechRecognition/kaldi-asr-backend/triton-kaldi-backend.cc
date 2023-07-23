@@ -919,6 +919,16 @@ void ModelInstanceState::FlushBatch() {
   if (!batch_corr_ids_.empty()) {
     cuda_pipeline_->DecodeBatch(batch_corr_ids_, batch_wave_samples_,
                                 batch_is_first_chunk_, batch_is_last_chunk_);
+
+/*     for (auto& wav_sample : batch_wave_samples_) {
+        // Get the pointer to the dynamically allocated memory
+        kaldi::BaseFloat* dataPtr = wav_sample.Data();
+
+        // Delete the dynamically allocated memory
+        delete[] dataPtr;
+    }
+    //Then clear the vectors
+ */
     batch_corr_ids_.clear();
     batch_wave_samples_.clear();
     batch_is_first_chunk_.clear();

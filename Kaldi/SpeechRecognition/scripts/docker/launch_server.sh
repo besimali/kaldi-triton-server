@@ -16,15 +16,42 @@
 NV_VISIBLE_DEVICES=${NVIDIA_VISIBLE_DEVICES:-"0"}
 
 # Start Triton server 
-docker run --rm -it \
-   --gpus $NV_VISIBLE_DEVICES \
-   --shm-size=1g \
-   --ulimit memlock=-1 \
-   --ulimit stack=67108864 \
-   -p8000:8000 \
-   -p8001:8001 \
-   -p8002:8002 \
-   --name trt_server_asr \
-   -v $PWD/data:/data \
-   -v $PWD/model-repo:/mnt/model-repo \
-   triton_kaldi_server
+
+valgrind_arg_found=false
+
+for arg in "$@"; do
+    if [ "$arg" == "--valgrind" ]; then
+        valgrind_arg_found=true
+        break
+    fi
+done
+
+if [ "$valgrind_arg_found" == true ]; then
+   docker run --rm -it \
+      --gpus $NV_VISIBLE_DEVICES \
+      --shm-size=1g \
+      --ulimit memlock=-1 \
+      --ulimit stack=67108864 \
+      -p8000:8000 \
+      -p8001:8001 \
+      -p8002:8002 \
+      --name trt_server_asr \
+      -v $PWD/data:/data \
+      -v $PWD/model-repo:/mnt/model-repo \
+      triton_kaldi_server \
+      valgrind --leak-check=full tritonserver --grpc-infer-allocation-pool-size 1 --model-repo=/workspace/model-repo
+else
+    docker run --rm -it \
+      --gpus $NV_VISIBLE_DEVICES \
+      --shm-size=1g \
+      --ulimit memlock=-1 \
+      --ulimit stack=67108864 \
+      -p8000:8000 \
+      -p8001:8001 \
+      -p8002:8002 \
+      --name trt_server_asr \
+      -v $PWD/data:/data \
+      -v $PWD/model-repo:/mnt/model-repo \
+      triton_kaldi_server \
+      tritonserver --grpc-infer-allocation-pool-size 1 --model-repo=/workspace/model-repo
+fi

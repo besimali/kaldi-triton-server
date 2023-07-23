@@ -30,22 +30,22 @@ ARG PYTHON_VER
 RUN set -eux; \
     apt-get update; \
     apt-get install -yq --no-install-recommends \
-        automake \
-        autoconf \
-        cmake \
-        flac \
-        gawk \
-        libatlas3-base \
-        libtool \
-        python${PYTHON_VER} \
-        python${PYTHON_VER}-dev \
-        sox \
-        subversion \
-        unzip \
-        bc \
-        libatlas-base-dev \
-        gfortran \
-        zlib1g-dev; \
+    automake \
+    autoconf \
+    cmake \
+    flac \
+    gawk \
+    libatlas3-base \
+    libtool \
+    python${PYTHON_VER} \
+    python${PYTHON_VER}-dev \
+    sox \
+    subversion \
+    unzip \
+    bc \
+    libatlas-base-dev \
+    gfortran \
+    zlib1g-dev; \
     rm -rf /var/lib/apt/lists/*
 
 # Add Kaldi dependency
@@ -69,7 +69,7 @@ COPY kaldi-asr-backend /workspace/triton-kaldi-backend
 RUN set -eux; \
     cd /workspace/triton-kaldi-backend; \
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$(pwd)/install" \
-        -B build .; \
+    -B build .; \
     cmake --build build --parallel; \
     cmake --install build
 
@@ -84,21 +84,22 @@ ARG PYTHON_VER
 RUN set -eux; \
     apt-get update; \
     apt-get install -yq --no-install-recommends \
-        automake \
-        autoconf \
-        cmake \
-        flac \
-        gawk \
-        libatlas3-base \
-        libtool \
-        python${PYTHON_VER} \
-        python${PYTHON_VER}-dev \
-        sox \
-        subversion \
-        unzip \
-        bc \
-        libatlas-base-dev \
-        zlib1g-dev; \
+    automake \
+    autoconf \
+    cmake \
+    flac \
+    gawk \
+    libatlas3-base \
+    libtool \
+    python${PYTHON_VER} \
+    python${PYTHON_VER}-dev \
+    sox \
+    subversion \
+    unzip \
+    bc \
+    libatlas-base-dev \
+    valgrind \
+    zlib1g-dev; \
     rm -rf /var/lib/apt/lists/*
 
 # Add Kaldi dependency

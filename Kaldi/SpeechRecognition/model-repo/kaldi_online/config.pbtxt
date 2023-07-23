@@ -1,6 +1,6 @@
 name: "kaldi_online"
 backend: "kaldi"
-max_batch_size: 600
+max_batch_size: 10
 model_transaction_policy {
   decoupled: True
 }
@@ -68,7 +68,7 @@ parameters [
   {
     key: "num_channels"
     value { 
-      string_value: "4000"
+      string_value: "40"
     }
   },
   {
@@ -80,7 +80,7 @@ parameters [
   {
     key: "max_active"
     value { 
-      string_value: "10000" 
+      string_value: "100" 
     }
   },
   {
@@ -137,8 +137,8 @@ sequence_batching {
     }
   ]
   oldest {
-    max_candidate_sequences: 4000
-    preferred_batch_size: [ 600 ]
+    max_candidate_sequences: 4
+    preferred_batch_size: [ 1 ]
     max_queue_delay_microseconds: 1000
   }
 },
